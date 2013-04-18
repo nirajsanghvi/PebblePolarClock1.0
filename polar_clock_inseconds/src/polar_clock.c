@@ -12,14 +12,15 @@
 
 #define MY_UUID { 0x57, 0x90, 0xEA, 0xC3, 0x00, 0xD5, 0x4C, 0xB2, 0xB1, 0x8F, 0x22, 0x0C, 0x4F, 0xB5, 0x89, 0x1B }
 PBL_APP_INFO(MY_UUID, 
-	"Polar Clock In", "Niraj Sanghvi",
+	"Polar Clock Lite", "Niraj Sanghvi",
 	1, 0,
 	RESOURCE_ID_IMAGE_MENU_ICON,
 	APP_INFO_WATCH_FACE);
 
-#define SHOW_SECONDS 1
-#define BIG_SECONDS 1 //Only applies when SHOW_SECONDS is selected
-#define SHOW_TEXT_TIME 0 //Don't use this option with BIG_SECONDS
+#define SHOW_SECONDS 0
+#define BIG_SECONDS 0 //Only applies when SHOW_SECONDS is selected
+#define SHOW_TEXT_TIME 1 //Don't use this option with BIG_SECONDS
+#define SHOW_TEXT_DATE 1
 #define TWENTY_FOUR_HOUR_DIAL 0
 
 Window window;
@@ -33,6 +34,10 @@ Layer second_display_layer;
 
 #if SHOW_TEXT_TIME
 TextLayer text_time_layer;
+#endif
+
+#if SHOW_TEXT_DATE
+TextLayer text_date_layer;
 #endif
 
 
@@ -205,6 +210,14 @@ void handle_second_tick(AppContextRef ctx, PebbleTickEvent *t) {
 
   #endif
 
+  #if SHOW_TEXT_DATE
+  static char date_text[] = "Xxx 00";
+
+  string_format_time(date_text, sizeof(date_text), "%b %e", t->tick_time);
+  text_layer_set_text(&text_date_layer, date_text);
+
+  #endif
+
 }
 
 #else
@@ -233,6 +246,14 @@ void handle_minute_tick(AppContextRef ctx, PebbleTickEvent *t) {
   string_format_time(time_text, sizeof(time_text), time_format, t->tick_time);
 
   text_layer_set_text(&text_time_layer, time_text);
+
+  #endif
+
+  #if SHOW_TEXT_DATE
+  static char date_text[] = "Xxx 00";
+
+  string_format_time(date_text, sizeof(date_text), "%b %e", t->tick_time);
+  text_layer_set_text(&text_date_layer, date_text);
 
   #endif
 
@@ -285,9 +306,26 @@ void handle_init(AppContextRef ctx) {
   text_layer_init(&text_time_layer, window.layer.frame);
   text_layer_set_text_color(&text_time_layer, GColorWhite);
   text_layer_set_background_color(&text_time_layer, GColorClear);
+
+  #if SHOW_TEXT_DATE
+  layer_set_frame(&text_time_layer.layer, GRect(47, 57, 144-47, 168-57));
+  #else
   layer_set_frame(&text_time_layer.layer, GRect(47, 70, 144-47, 168-70));
+  #endif
+
   text_layer_set_font(&text_time_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));
   layer_add_child(&window.layer, &text_time_layer.layer);
+
+  #endif
+
+  #if SHOW_TEXT_DATE
+
+  text_layer_init(&text_date_layer, window.layer.frame);
+  text_layer_set_text_color(&text_date_layer, GColorWhite);
+  text_layer_set_background_color(&text_date_layer, GColorClear);
+  layer_set_frame(&text_date_layer.layer, GRect(44, 80, 144-44, 168-80));
+  text_layer_set_font(&text_date_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));
+  layer_add_child(&window.layer, &text_date_layer.layer);
 
   #endif
 

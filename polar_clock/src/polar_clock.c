@@ -19,7 +19,8 @@ PBL_APP_INFO(MY_UUID,
 	RESOURCE_ID_IMAGE_MENU_ICON,
 	APP_INFO_WATCH_FACE);
 
-#define SHOW_TEXT_TIME 0
+#define SHOW_TEXT_TIME 1
+#define SHOW_TEXT_DATE 1
 #define TWENTY_FOUR_HOUR_DIAL 0
 
 Window window;
@@ -30,6 +31,10 @@ Layer second_display_layer;
 
 #if SHOW_TEXT_TIME
 TextLayer text_time_layer;
+#endif
+
+#if SHOW_TEXT_DATE
+TextLayer text_date_layer;
 #endif
 
 const GPathInfo SECOND_SEGMENT_PATH_POINTS = {
@@ -188,6 +193,14 @@ void handle_second_tick(AppContextRef ctx, PebbleTickEvent *t) {
 
   #endif
 
+  #if SHOW_TEXT_DATE
+  static char date_text[] = "Xxx 00";
+
+  string_format_time(date_text, sizeof(date_text), "%b %e", t->tick_time);
+  text_layer_set_text(&text_date_layer, date_text);
+
+  #endif
+
 }
 
 
@@ -232,9 +245,26 @@ void handle_init(AppContextRef ctx) {
   text_layer_init(&text_time_layer, window.layer.frame);
   text_layer_set_text_color(&text_time_layer, GColorWhite);
   text_layer_set_background_color(&text_time_layer, GColorClear);
+
+  #if SHOW_TEXT_DATE
+  layer_set_frame(&text_time_layer.layer, GRect(47, 57, 144-47, 168-57));
+  #else
   layer_set_frame(&text_time_layer.layer, GRect(47, 70, 144-47, 168-70));
+  #endif
+
   text_layer_set_font(&text_time_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));
   layer_add_child(&window.layer, &text_time_layer.layer);
+
+  #endif
+
+  #if SHOW_TEXT_DATE
+
+  text_layer_init(&text_date_layer, window.layer.frame);
+  text_layer_set_text_color(&text_date_layer, GColorWhite);
+  text_layer_set_background_color(&text_date_layer, GColorClear);
+  layer_set_frame(&text_date_layer.layer, GRect(44, 80, 144-44, 168-80));
+  text_layer_set_font(&text_date_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));
+  layer_add_child(&window.layer, &text_date_layer.layer);
 
   #endif
 
