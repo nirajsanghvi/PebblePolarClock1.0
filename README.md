@@ -13,7 +13,8 @@ Clock that don't show seconds (to save battery, look more minimal/less ditractin
 * Polar Clock Lite - 
 * Polar Clock Lite no time - same as above but omits the text time in the middle
 
-
+#Project Structure
+==================
 By making use of compiler define options, I was able to create the 5 variations above in only 2 projects:
 * Polar Clock - source of Polar Clock and Polar Clock no time
 * Polar Clock Inseconds - source of Polar Clock Inseconds, Polar Clock Lite, and Polar Clock Lite no time
