@@ -21,6 +21,8 @@ PBL_APP_INFO(MY_UUID,
 #define BIG_SECONDS 0 //Only applies when SHOW_SECONDS is selected
 #define SHOW_TEXT_TIME 1 //Don't use this option with BIG_SECONDS
 #define SHOW_TEXT_DATE 1
+#define ROW_DATE 1
+
 #define TWENTY_FOUR_HOUR_DIAL 0
 
 Window window;
@@ -211,9 +213,15 @@ void handle_second_tick(AppContextRef ctx, PebbleTickEvent *t) {
   #endif
 
   #if SHOW_TEXT_DATE
-  static char date_text[] = "Xxx 00";
 
-  string_format_time(date_text, sizeof(date_text), "%b %e", t->tick_time);
+    #if ROW_DATE
+    static char date_text[] = "00 Xxx";
+    string_format_time(date_text, sizeof(date_text), "%e %b", t->tick_time);
+    #else
+    static char date_text[] = "Xxx 00";
+    string_format_time(date_text, sizeof(date_text), "%b %e", t->tick_time);
+    #endif
+
   text_layer_set_text(&text_date_layer, date_text);
 
   #endif
@@ -250,9 +258,15 @@ void handle_minute_tick(AppContextRef ctx, PebbleTickEvent *t) {
   #endif
 
   #if SHOW_TEXT_DATE
-  static char date_text[] = "Xxx 00";
 
-  string_format_time(date_text, sizeof(date_text), "%b %e", t->tick_time);
+    #if ROW_DATE
+    static char date_text[] = "00 Xxx";
+    string_format_time(date_text, sizeof(date_text), "%e %b", t->tick_time);
+    #else
+    static char date_text[] = "Xxx 00";
+    string_format_time(date_text, sizeof(date_text), "%b %e", t->tick_time);
+    #endif
+
   text_layer_set_text(&text_date_layer, date_text);
 
   #endif
@@ -323,7 +337,11 @@ void handle_init(AppContextRef ctx) {
   text_layer_init(&text_date_layer, window.layer.frame);
   text_layer_set_text_color(&text_date_layer, GColorWhite);
   text_layer_set_background_color(&text_date_layer, GColorClear);
-  layer_set_frame(&text_date_layer.layer, GRect(44, 80, 144-44, 168-80));
+    #if SHOW_TEXT_TIME
+    layer_set_frame(&text_date_layer.layer, GRect(44, 80, 144-44, 168-80));
+    #else
+    layer_set_frame(&text_date_layer.layer, GRect(44, 70, 144-44, 168-70));
+    #endif
   text_layer_set_font(&text_date_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));
   layer_add_child(&window.layer, &text_date_layer.layer);
 
