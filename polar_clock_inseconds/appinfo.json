@@ -1,0 +1,29 @@
+{
+    "versionLabel": "1.0",
+    "uuid": "2ba71ea0-5c8b-4155-b659-7cc680740b7e",
+    "appKeys": {},
+    "longName": "Polar Insecond ",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Polar Insecond ",
+    "companyName": "ollien",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "font",
+                "name": "FONT_ROBOTO_CONDENSED_21",
+                "file": "fonts/Roboto-Condensed.ttf"
+            },
+            {
+                "type": "png",
+                "name": "IMAGE_MENU_ICON",
+                "file": "images/menu_icon_polar_clock.png"
+            }
+        ]
+    }
+}

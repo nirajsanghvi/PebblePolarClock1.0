@@ -1,0 +1,30 @@
+{
+    "versionLabel": "1.0",
+    "uuid": "7de68bf7-61a7-4c9d-b323-f9d13d4648c4",
+    "appKeys": {},
+    "longName": "Polar 2.0 Port",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Polar 2.0 Port",
+    "companyName": "ollien",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "menuIcon": true,
+                "type": "png",
+                "name": "IMAGE_MENU_ICON",
+                "file": "images/menu_icon_polar_clock.png"
+            },
+            {
+                "type": "font",
+                "name": "FONT_ROBOTO_CONDENSED_21",
+                "file": "fonts/Roboto-Condensed.ttf"
+            }
+        ]
+    }
+}
