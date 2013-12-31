@@ -311,7 +311,7 @@ minute_display_layer=layer_create(layer_get_frame(window_get_root_layer(window))
   text_layer_set_text_color(text_time_layer, GColorWhite);
   text_layer_set_background_color(text_time_layer, GColorClear);
 	  text_layer_set_font(text_time_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));
-layer_add_child(window_get_root_layer(window),text_layer_get_layer(text_time_layer));
+//layer_add_child(window_get_root_layer(window),text_layer_get_layer(text_time_layer)); Uncomment line in order to display time.
 #endif
 									
   #if SHOW_TEXT_DATE
